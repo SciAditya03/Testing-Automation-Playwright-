@@ -1,0 +1,9 @@
+test_id,module,test_scenario,priority,precondition,action,input_data,expected_result,selector_hint,api_hint,notes
+CHATS_001,ActiveChats,Verify chats page loads,smoke,User logged in,Navigate to /student/chats,,Chat list or empty state visible,[data-testid='chat-list'],GET /api/chats,Initial load test
+CHATS_002,ActiveChats,Send text message,smoke,Chat open,Fill input + click Send,"Test message 123",Outgoing message appears with correct text,textarea[placeholder*='Type a message'],POST /api/chats/{id}/messages,Unique message per run
+CHATS_003,ActiveChats,Unread badge updates,regression,Chat has unread messages,Open chat from list,,Unread count decreases or disappears,[data-testid='unread-count'],POST /api/chats/{id}/read,May use WebSocket event
+CHATS_004,ActiveChats,Typing indicator shows,regression,Chat open + recruiter online,Type in message input (no send),,"Recruiter is typing..." appears,text=/typing/i,WebSocket 'typing' event,Debounced to avoid spam
+CHATS_005,ActiveChats,Empty state when no chats,smoke,No active chats,Navigate to chats,,Message 'No active chats' visible,text=/No active chats/i,,Test requires data cleanup
+CHATS_006,ActiveChats,Message delivery status,regression,Message sent,Wait after send,,Status changes: sent → delivered → read,[data-status='delivered'],WebSocket 'delivery' event,May need mock backend
+CHATS_007,ActiveChats,Handle recruiter offline,edge,Chat open + recruiter online,Simulate recruiter disconnect,,Presence indicator changes to offline,[data-testid='online-status'],WebSocket 'presence' event,Test real-time updates
+CHATS_008,ActiveChats,Attach file to message,regression,Chat open,Click attach + select file,test.pdf,File appears in message with name/size,input[type='file'],POST /api/files,May need file cleanup after test

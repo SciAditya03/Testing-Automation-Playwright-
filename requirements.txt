@@ -1,0 +1,5 @@
+pytest==7.4.3
+playwright==1.40.0
+pypdf==3.17.0
+pyautogui==0.9.54
+python-dotenv==1.0.0  # For env-based config

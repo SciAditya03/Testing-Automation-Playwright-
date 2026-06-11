@@ -1,0 +1,9 @@
+test_id,module,test_scenario,priority,precondition,action,input_data,expected_result,selector_hint,api_hint,notes
+FEED_001,Feed,Verify feed loads with posts,smoke,User logged in,Navigate to /student/feed,,Feed shows posts or empty state,main,GET /api/feed,Initial load test
+FEED_002,Feed,Create new post with text,smoke,On feed page,Fill textarea + click Post,"Hello from automation",New post appears at top with correct content,textarea[placeholder*='What are you building'],POST /api/posts,Unique content per run
+FEED_003,Feed,Like button increments count,regression,Post exists with likes,Click like button on first post,,Like count increases by 1,text=/like[s]?/i,POST /api/posts/{id}/like,Wait for networkidle after click
+FEED_004,Feed,Comment section expands,regression,Post exists,Click comments button,,Comments container becomes visible,text=/comments?/i,GET /api/posts/{id}/comments,May lazy-load comments
+FEED_005,Feed,Empty state shows when no posts,smoke,Feed cleared via backend,Navigate to feed,,Message 'No posts yet' visible,text=/No posts yet/i,,Test requires data setup
+FEED_006,Feed,Filter posts by internship type,regression,Feed has mixed posts,Select filter dropdown,"Internship",Only internship posts visible,#filterDropdown,GET /api/feed?type=internship,Check API query param
+FEED_007,Feed,Handle network error gracefully,regression,Simulate offline,Disconnect network + refresh,,Error message or retry option shown,.error-state,,Use playwright.setOfflineMode()
+FEED_008,Feed,Post with special characters,regression,On feed page,Create post with emojis/HTML,"Test 🚀 <script>alert('xss')</script>",Content displays safely (no script execution),.post-content,,Verify XSS protection
